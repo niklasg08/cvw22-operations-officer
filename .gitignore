@@ -1,0 +1,12 @@
+# logs
+*.log
+
+# Environments
+.env
+.envrc
+.venv
+env.bak/
+venv.bak/
+
+# Visual Studio Code
+.vscode/
