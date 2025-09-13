@@ -6,73 +6,105 @@ from textwrap import dedent
 from dotenv import load_dotenv
 import logging
 import os
-import time
+import datetime
 import csv
 import random
+import urllib.request
 
 load_dotenv()
 token = os.getenv("DISCORD_TOKEN")
-channelId = int(os.getenv("DISCORD_CHANNEL"))
+channelBrevityId = int(os.getenv("DISCORD_CHANNEL_BREVITY"))
 
 handler = logging.FileHandler(filename="cvw22-operations-officer.log")
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intents)
-global previousMinute
-leftBrevityTerms = {}
+dailyBotTask = datetime.time(hour=11)
+allBrevity = {}
+leftBrevity = {}
+with open("brevityTerms.csv", "r") as f:
+    reader = csv.DictReader(f, delimiter=",")
+
+    for line in reader:
+        allBrevity.update({line["Brevity"]: line["Description"]})
 
 
-def getMinute():
-    return int(time.strftime("%M", time.gmtime()))
+def getIp():
+    ip = urllib.request.urlopen('https://v4.ident.me/').read().decode('utf8')
+    return ip
 
 
-def getBrevityTerm():
-    global leftBrevityTerms
+async def getBrevity(searchedBrevity=None):
+    global leftBrevity
 
-    if len(leftBrevityTerms) <= 0:
-        with open("brevityTerms.csv", mode="r") as f:
-            reader = csv.DictReader(f, delimiter=",")
+    if searchedBrevity is None:
+        if len(leftBrevity) <= 0:
+            leftBrevity = allBrevity.copy()
 
-            for line in reader:
-                leftBrevityTerms.update({line["Brevity"]: line["Description"]})
+        listBrevity = list(leftBrevity.keys())
+        randomId = random.randrange(0, len(listBrevity))
+        brevityTerm = listBrevity[randomId]
+        description = leftBrevity[brevityTerm]
+        description = "\n".join(f"> {line}" for line in description.strip().splitlines())
+        leftBrevity.pop(brevityTerm)
 
-    listBT = list(leftBrevityTerms.keys())
-    randomId = random.randrange(0, len(listBT))
-    brevityTerm = listBT[randomId]
-    description = leftBrevityTerms[brevityTerm]
-    description = "\n".join(f"> {line}" for line in description.strip().splitlines())
-    leftBrevityTerms.pop(brevityTerm)
+        return dedent(f"""
+                      **Today, we're looking at the following Brevity Term:** "{brevityTerm}"
+                      {description}
+                      """)
+    else:
+        results = []
 
-    return dedent(
-        f"""
-        **Today, we're looking at the following Brevity Term:** `{brevityTerm}`
-        {description}
-        """)
+        for brevity, description in allBrevity.items():
+            if searchedBrevity.upper() in brevity.upper():
+                results.append((brevity, description))
+
+        for result in results:
+            description = "\n".join(f"> {line}" for line in result[1].strip().splitlines())
+
+            channel = bot.get_channel(channelBrevityId)
+            await channel.send(dedent(f"""
+                                     **Brevity Term:** "{result[0]}"
+                                     {description}"""))
 
 
 @bot.event
 async def on_ready():
-    global previousMinute
-
     print(f"{bot.user.name} is now online!")
-    previousMinute = getMinute() - 1
-    scheduler.start()
+    sendDailyBrevity.start()
 
 
-@tasks.loop(seconds=1)
-async def scheduler():
-    global previousMinute
-    currentMinute = getMinute()
-
-    if not previousMinute >= currentMinute:
-
-        channel = bot.get_channel(channelId)
-        await channel.send(getBrevityTerm())
-        previousMinute = currentMinute
+@tasks.loop(time=dailyBotTask)
+async def sendDailyBrevity():
+    channel = bot.get_channel(channelBrevityId)
+    brevity = await getBrevity()
+    await channel.send(brevity)
 
 
-@scheduler.before_loop
+@sendDailyBrevity.before_loop
 async def before_scheduler():
     await bot.wait_until_ready()
 
+
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+
+    if bot.user.mention in message.content.split():
+        await message.channel.send("Good morning aviators!")
+
+    if message.content.startswith("!test"):
+        await message.channel.send("Hello World!")
+
+    if message.content.startswith("!ip"):
+        ip = getIp()
+        await message.channel.send(ip)
+
+    if message.content.startswith("!brevity"):
+        brevity = message.content.replace("!brevity", "").strip()
+        await getBrevity(brevity)
+
+    if message.content.startswith("!daybrief"):
+        await message.channel.send("The daybrief command isn't available atm!")
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
