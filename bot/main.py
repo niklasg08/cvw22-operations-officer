@@ -23,7 +23,6 @@ intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intents)
 dailyBotTask = datetime.time(hour=11)
 allBrevity = {}
-leftBrevity = {}
 lastDate = datetime.datetime.now().strftime("%d.%m.%Y")
 with open("brevityTerms.csv", "r") as f:
     reader = csv.DictReader(f, delimiter=",")
@@ -39,38 +38,48 @@ def getIp():
     return ip
 
 
-async def getBrevity(searchedBrevity=None):
-    global leftBrevity
+def getBrevity():
+    with open("data.json", encoding="utf-8") as f:
+        content = json.load(f)
 
-    if searchedBrevity is None:
-        if len(leftBrevity) <= 0:
-            leftBrevity = allBrevity.copy()
+    if not content["leftBrevity"]:
+        content["leftBrevity"] = [
+            {"Brevity": b, "Description": d}
+            for b, d in allBrevity.items()
+        ]
 
-        listBrevity = list(leftBrevity.keys())
-        randomId = random.randrange(0, len(listBrevity))
-        brevityTerm = listBrevity[randomId]
-        description = leftBrevity[brevityTerm]
-        description = "\n".join(f"> {line}" for line in description.strip().splitlines())
-        leftBrevity.pop(brevityTerm)
+    brevity_entry = random.choice(content["leftBrevity"])
+    brevityTerm = brevity_entry["Brevity"]
+    description = brevity_entry["Description"]
 
-        return dedent(f"""
-                      **Today, we're looking at the following Brevity Term:** "{brevityTerm}"
-                      {description}
-                      """)
-    else:
-        results = []
+    content["leftBrevity"] = [
+        entry for entry in content["leftBrevity"] if entry["Brevity"] != brevityTerm
+    ]
 
-        for brevity, description in allBrevity.items():
-            if searchedBrevity.upper() in brevity.upper():
-                results.append((brevity, description))
+    with open("data.json", "w", encoding="utf-8") as f:
+        json.dump(content, f, ensure_ascii=False, indent=4)
 
-        for result in results:
-            description = "\n".join(f"> {line}" for line in result[1].strip().splitlines())
+    description = "\n".join(f"> {line}" for line in description.strip().splitlines())
+    return dedent(f"""
+                 **Today, we're looking at the following Brevity Term:** "{brevityTerm}"
+                 {description}
+                 """)
 
-            channel = bot.get_channel(channelBrevityId)
-            await channel.send(dedent(f"""
-                                     **Brevity Term:** "{result[0]}"
-                                     {description}"""))
+
+async def getOneBrevity(searchedBrevity):
+    results = []
+
+    for brevity, description in allBrevity.items():
+        if searchedBrevity.upper() in brevity.upper():
+            results.append((brevity, description))
+
+    for result in results:
+        description = "\n".join(f"> {line}" for line in result[1].strip().splitlines())
+
+        channel = bot.get_channel(channelBrevityId)
+        await channel.send(dedent(f"""
+                                    **Brevity Term:** "{result[0]}"
+                                    {description}"""))
 
 
 def createDayBrief():
@@ -110,16 +119,17 @@ async def on_ready():
     print(f"{bot.user.name} is now online!")
     sendDailyBrevity.start()
     sendMonthlyReport.start()
+    print(getBrevity())
 
 
 @tasks.loop(time=dailyBotTask)
 async def sendDailyBrevity():
     channel = bot.get_channel(channelBrevityId)
-    brevity = await getBrevity()
+    brevity = getBrevity()
     await channel.send(brevity)
 
 
-@tasks.loop(seconds=5)
+@tasks.loop(seconds=60)
 async def sendMonthlyReport():
     currentMonth = int(datetime.datetime.now().strftime("%m"))
     with open("data.json", "r") as f:
@@ -147,7 +157,7 @@ async def on_raw_reaction_add(payload):
     channel = bot.get_channel(int(cID))
 
     msg = await channel.fetch_message(payload.message_id)
-    if payload.emoji.name == "🖊️" and payload.member.name != "vCVW-22 Bot":
+    if payload.emoji.name == "🖊️" and payload.member.name != bot.user.name:
         msg_content = msg.content
         lines = msg_content.split("\n")
         i = 0
@@ -164,7 +174,7 @@ async def on_raw_reaction_add(payload):
         lines[cs_line_num] = lines[cs_line_num] + " ~ signed by " + payload.member.mention
 
         await msg.edit(content="\n".join(lines))
-    elif payload.emoji.name == "📃" and payload.member.name != "vCVW-22 Bot":
+    elif payload.emoji.name == "📃" and payload.member.name != bot.user.name:
         msg_content = msg.content
         lines = msg_content.split("\n")
         n = 0
@@ -195,7 +205,7 @@ async def on_message(message):
 
     if message.content.startswith("!brevity"):
         brevity = message.content.replace("!brevity", "").strip()
-        await getBrevity(brevity)
+        await getOneBrevity(brevity)
 
     if message.content.startswith("!daybrief"):
         global lastBrief
