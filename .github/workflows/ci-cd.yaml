@@ -2,7 +2,7 @@ name: CI/CD for CVW22 Operations Officer Bot
 on:
   push:
     branches: ["main"]
-  pull_reqeust:
+  pull_request:
     branches: ["main"]
 
 jobs:
