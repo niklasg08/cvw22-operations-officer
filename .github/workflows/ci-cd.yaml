@@ -9,8 +9,6 @@ jobs:
   lint:
     name: Lint with flake8
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: lint
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,6 +30,8 @@ jobs:
   build_and_publish:
     name: Build & Push Docker Image
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: lint
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
