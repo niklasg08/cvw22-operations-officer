@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build image
-        run: docker build ./bot/ -t ghcr.io/niklasg08/cvw22-operations-officer:latest
+        run: docker build . -t ghcr.io/niklasg08/cvw22-operations-officer:latest
 
       - name: Push Image to Registry
         run: |

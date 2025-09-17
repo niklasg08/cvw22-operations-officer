@@ -1,0 +1,10 @@
+services:
+  cvw22-operations-officer:
+    container_name: cvw22-operations-officer
+    restart: always
+    volumes:
+      - /opt/docker/volumes/cvw22-operations-officer/data:/src/bot/data
+      - /opt/docker/logs/cvw22-operations-officer:/src/bot/log
+    image: ghcr.io/niklasg08/cvw22-operations-officer:latest
+    env_file:
+      - ./src/bot/.env
