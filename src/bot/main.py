@@ -18,18 +18,18 @@ token = os.getenv("DISCORD_TOKEN")
 channelBrevityId = int(os.getenv("DISCORD_CHANNEL_BREVITY"))
 channelReportId = int(os.getenv("DISCORD_CHANNEL_REPORT"))
 
-handler = logging.FileHandler(filename="cvw22-operations-officer.log")
+handler = logging.FileHandler(filename="log/cvw22-operations-officer.log")
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intents)
 dailyBotTask = datetime.time(hour=11)
 allBrevity = {}
 lastDate = datetime.datetime.now().strftime("%d.%m.%Y")
-with open("brevityTerms.csv", "r") as f:
+with open("data/brevityTerms.csv", "r") as f:
     reader = csv.DictReader(f, delimiter=",")
 
     for line in reader:
         allBrevity.update({line["Brevity"]: line["Description"]})
-with open("data.json") as f:
+with open("data/data.json") as f:
     data = json.load(f)
 
 
@@ -39,7 +39,7 @@ def getIp():
 
 
 def getBrevity():
-    with open("data.json", encoding="utf-8") as f:
+    with open("data/data.json", encoding="utf-8") as f:
         content = json.load(f)
 
     if not content["leftBrevity"]:
@@ -56,7 +56,7 @@ def getBrevity():
         entry for entry in content["leftBrevity"] if entry["Brevity"] != brevityTerm
     ]
 
-    with open("data.json", "w", encoding="utf-8") as f:
+    with open("data/data.json", "w", encoding="utf-8") as f:
         json.dump(content, f, ensure_ascii=False, indent=4)
 
     description = "\n".join(f"> {line}" for line in description.strip().splitlines())
@@ -132,7 +132,7 @@ async def sendDailyBrevity():
 @tasks.loop(seconds=60)
 async def sendMonthlyReport():
     currentMonth = int(datetime.datetime.now().strftime("%m"))
-    with open("data.json", "r") as f:
+    with open("data/data.json", "r") as f:
         content = json.load(f)
 
     if content["previousMonth"] < currentMonth:
@@ -141,7 +141,7 @@ async def sendMonthlyReport():
 
         content["previousMonth"] = currentMonth
 
-        with open("data.json", "w") as f:
+        with open("data/data.json", "w") as f:
             json.dump(content, f)
         await channel.send(createMonthlyRecap(pilots))
 

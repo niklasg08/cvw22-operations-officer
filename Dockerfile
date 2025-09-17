@@ -1,11 +1,10 @@
 FROM python:3.12.3
 
-WORKDIR /bot
-
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY main.py .
-COPY brevityTerms.csv .
+WORKDIR /src/bot
+
+COPY src/bot/main.py .
 
 CMD ["python", "main.py"]
