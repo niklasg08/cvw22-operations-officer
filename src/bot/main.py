@@ -16,7 +16,7 @@ import numpy as np
 load_dotenv()
 token = os.getenv("DISCORD_TOKEN")
 channelBrevityId = int(os.getenv("DISCORD_CHANNEL_BREVITY"))
-channelReportId = int(os.getenv("DISCORD_CHANNEL_REPORT"))
+channelRecapId = int(os.getenv("DISCORD_CHANNEL_RECAP"))
 
 handler = logging.FileHandler(filename="log/cvw22-operations-officer.log")
 intents = discord.Intents.all()
@@ -136,7 +136,7 @@ async def sendMonthlyReport():
         content = json.load(f)
 
     if content["previousMonth"] < currentMonth:
-        channel = bot.get_channel(channelReportId)
+        channel = bot.get_channel(channelRecapId)
         pilots = channel.members
 
         content["previousMonth"] = currentMonth
