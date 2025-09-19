@@ -11,18 +11,19 @@ if [ ! -f "src/bot/.env" ]; then
 fi
 
 echo "Creating data directory..."
-mkdir -p /opt/docker/volumes/cvw22-operations-officer/data
+sudo mkdir -p /opt/docker/volumes/cvw22-operations-officer/data
 
 echo "Copying data files to opt directory..."
-sudo cp -r src/bot/data /opt/docker/volumes/cvw22-operations-officer/data
+sudo cp -r src/bot/data /opt/docker/volumes/cvw22-operations-officer
 
 echo "Setting permissions..."
-sudo chmod -R 776 /opt/docker/volumes/cvw22-operations-officer/data
+sudo chmod 776 /opt/docker/volumes/cvw22-operations-officer/data/brevityTerms.csv
+sudo chmod 776 /opt/docker/volumes/cvw22-operations-officer/data/data.json
 
 echo "Creating log directory..."
-mkdir -p /opt/docker/logs/cvw22-operations-officer
+sudo mkdir -p /opt/docker/logs/cvw22-operations-officer
 
 echo "Setting permissions..."
-sudo chmod -R 776 /opt/docker/logs/cvw22-operations-officer
+sudo chmod 776 /opt/docker/logs/cvw22-operations-officer
 
 echo "Setup complete!"
