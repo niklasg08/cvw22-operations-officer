@@ -14,11 +14,10 @@ echo "Creating data directory..."
 sudo mkdir -p /opt/docker/volumes/cvw22-operations-officer/data
 
 echo "Copying data files to opt directory..."
-sudo cp -r src/bot/data /opt/docker/volumes/cvw22-operations-officer
+sudo cp -r src/bot/data/. /opt/docker/volumes/cvw22-operations-officer/data
 
 echo "Setting permissions..."
-sudo chmod 776 /opt/docker/volumes/cvw22-operations-officer/data/brevityTerms.csv
-sudo chmod 776 /opt/docker/volumes/cvw22-operations-officer/data/data.json
+sudo chmod -R 776 /opt/docker/volumes/cvw22-operations-officer/data
 
 echo "Creating log directory..."
 sudo mkdir -p /opt/docker/logs/cvw22-operations-officer
