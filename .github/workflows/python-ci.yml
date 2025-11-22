@@ -25,10 +25,10 @@ jobs:
       - name: Install the project
         run: uv sync --locked --group dev
       - name: Lint code with ruff
-        run: uv tool run ruff check --diff --output-format=github src
+        run: uv run ruff check --diff --output-format=github src
       - name: Format code with ruff
-        run: uv tool run ruff format --diff src
+        run: uv run ruff format --diff src
       - name: Type check code with pyright
-        run: uv tool run pyright src
+        run: uv run pyright src
       - name: Test code with pytest
-        run: uv tool run pytest tests
+        run: uv run pytest tests
