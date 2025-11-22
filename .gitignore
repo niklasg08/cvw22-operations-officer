@@ -1,2 +1,11 @@
+# Python
+*.pyc
+__pycache__/
+.venv
+
+# Build artifacts
+*.egg-info/
+build/
+
+# Code editors
 .idea
-*.egg-info
