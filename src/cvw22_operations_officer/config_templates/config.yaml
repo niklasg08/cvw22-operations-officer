@@ -1,0 +1,8 @@
+# Copyright 2025 Niklas Glienke
+
+commands:
+  config: true
+
+admins:
+  - name: "Test User"
+    id: 0123456789

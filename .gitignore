@@ -9,3 +9,6 @@ build/
 
 # Code editors
 .idea
+
+# Runtime
+.env

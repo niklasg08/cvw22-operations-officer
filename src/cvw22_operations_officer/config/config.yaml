@@ -1,0 +1,8 @@
+# Copyright 2025 Niklas Glienke
+
+commands:
+  config: true
+
+admins:
+  - name: "CHATTER (Niklas)"
+    id: 802614724575232020
