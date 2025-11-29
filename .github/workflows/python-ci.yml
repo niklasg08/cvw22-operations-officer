@@ -32,5 +32,7 @@ jobs:
         run: uv run ruff format --diff src
       - name: Type check code with pyright
         run: uv run pyright src
+      - name: Lint docstrings with pydoclint
+        run: uv run pydoclint src tests
       - name: Test code with pytest
         run: uv run pytest tests

@@ -11,6 +11,7 @@ requires-python = ">=3.12"
 dependencies = [
     "discord>=2.3.2",
     "dotenv>=0.9.9",
+    "pytz>=2025.2",
     "pyyaml>=6.0.3",
 ]
 license = "MIT"
@@ -21,6 +22,9 @@ keywords = ["discord", "docker"]
 line-length = 79
 indent-width = 4
 
+[tool.ruff.lint]
+extend-select = ["I"]
+
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
@@ -30,9 +34,14 @@ skip-magic-trailing-comma = false
 venvPath = "."
 venv = ".venv"
 
+[tool.pydoclint]
+style = "google"
+allow-init-docstring = true
+
 [dependency-groups]
 dev = [
     "pre-commit>=4.4.0",
+    "pydoclint>=0.8.3",
     "pyright>=1.1.407",
     "pytest>=9.0.1",
     "pytest-cov>=7.0.0",

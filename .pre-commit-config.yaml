@@ -12,3 +12,8 @@ repos:
     rev: v1.1.407
     hooks:
       - id: pyright
+  - repo: https://github.com/jsh9/pydoclint
+    rev: 0.8.3
+    hooks:
+      - id: pydoclint
+        args: [ --style=google, --allow-init-docstring=True ]

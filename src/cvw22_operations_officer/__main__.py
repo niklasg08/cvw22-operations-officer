@@ -5,22 +5,22 @@ import asyncio
 import logging
 import os
 import shutil
+import sqlite3
 from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 
 import discord
-from bot import DiscordBot
-from cogs import *
 from dotenv import load_dotenv
+
+from cvw22_operations_officer.bot import DiscordBot
+from cvw22_operations_officer.cogs import admin, brevity_term
 
 DEFAULT_CONFIG_DIR = Path(__file__).resolve().parent / "config"
 DEFAULT_LOG_LEVEL = "INFO"
 DEFAULT_LOG_ROTATION_DAYS = 7
 DEFAULT_LOG_BACKUP_COUNT = 1
 
-CONFIG_FILES = (
-    "config.yaml",
-)
+CONFIG_FILES = ("config.yaml",)
 
 
 def setup_logging(
@@ -34,7 +34,8 @@ def setup_logging(
         log_rotate_days (int): Number of days until the log file rotates.
 
     Returns:
-        The configured logger object.
+        logging.Logger: The configured logger object.
+
     """
     log_file = Path(config_dir) / "cvw22_operations_officer.log"
 
@@ -62,18 +63,22 @@ def setup_logging(
     return logger
 
 
-def setup_config_dir(config_dir: str) -> None:
-    """Set up the configuration directory with all required files
+def setup_config_dir(config_dir: str | Path) -> None:
+    """Set up the configuration directory with all required files.
 
     Args:
-        config_dir (str): Path to the configuration directory
+        config_dir (str | Path): Path to the configuration directory.
 
     Raises:
         NotADirectoryError: If the specified configuration directory is not a
-            directory
+            directory.
+
     """
+    # TODO: Improve function if applicable
     config_dir = Path(config_dir)
     config_templates_dir = Path(__file__).resolve().parent / "config_templates"
+    database_templates_dir = config_templates_dir / "database"
+    database_path = database_templates_dir / "cvw22_operations_officer.db"
 
     if not config_dir.exists():
         config_dir.mkdir(parents=True)
@@ -88,11 +93,32 @@ def setup_config_dir(config_dir: str) -> None:
         if not file_path.exists():
             shutil.copyfile(config_templates_dir / file, file_path)
 
+    if database_path.exists():
+        return
+
+    open(database_path, "a").close()
+
+    with open(database_templates_dir / "schema.sql", "r") as f:
+        schema_script = f.read()
+
+    with open(database_templates_dir / "brevity_term.sql", "r") as f:
+        brevity_term_script = f.read()
+
+    con = sqlite3.connect(config_dir / "cvw22_operations_officer.db")
+    cur = con.cursor()
+
+    cur.executescript(schema_script)
+    cur.executescript(brevity_term_script)
+
+    con.commit()
+    con.close()
+
+
 def get_arguments() -> argparse.Namespace:
     """Get parsed arguments.
 
     Returns:
-        The parsed arguments.
+        argparse.Namespace: The parsed arguments.
     """
     parser = argparse.ArgumentParser(
         description="""CVW22 Operations Officer:
@@ -133,6 +159,10 @@ async def main() -> None:
         args.log_rotate_days,
     )
     discord_token = os.getenv("DISCORD_TOKEN")
+
+    if discord_token is None:
+        raise RuntimeError("No 'DISCORD_TOKEN' env variable found.")
+
     intents = discord.Intents.all()
     discord_bot = DiscordBot(
         args.config_dir,
@@ -140,7 +170,8 @@ async def main() -> None:
         command_prefix="!",
     )
 
-    await discord_bot.add_cog(Admin(discord_bot))
+    await discord_bot.add_cog(admin.Admin(discord_bot))
+    await discord_bot.add_cog(brevity_term.BrevityTerm(discord_bot))
 
     logger.info("Starting CVW22 Operations Officer ...")
     await discord_bot.start(discord_token)
@@ -151,7 +182,4 @@ if __name__ == "__main__":
     load_dotenv()
     setup_config_dir(args.config_dir)
 
-    if os.getenv("DISCORD_TOKEN") is None:
-        raise RuntimeError("No 'DISCORD_TOKEN' env variable found.")
-    else:
-        asyncio.run(main())
+    asyncio.run(main())
