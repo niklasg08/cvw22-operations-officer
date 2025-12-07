@@ -6,6 +6,10 @@ __pycache__/
 # Build artifacts
 *.egg-info/
 build/
+_build/
 
 # Code editors
 .idea
+
+# Runtime
+.env
