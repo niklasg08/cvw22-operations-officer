@@ -74,7 +74,6 @@ def setup_config_dir(config_dir: str | Path) -> None:
             directory.
 
     """
-    # TODO: Improve function if applicable
     config_dir = Path(config_dir)
     config_templates_dir = Path(__file__).resolve().parent / "config_templates"
     database_templates_dir = config_templates_dir / "database"
@@ -104,14 +103,14 @@ def setup_config_dir(config_dir: str | Path) -> None:
     with open(database_templates_dir / "brevity_term.sql", "r") as f:
         brevity_term_script = f.read()
 
-    con = sqlite3.connect(config_dir / "cvw22_operations_officer.db")
-    cur = con.cursor()
+    connection = sqlite3.connect(config_dir / "cvw22_operations_officer.db")
+    cursor = connection.cursor()
 
-    cur.executescript(schema_script)
-    cur.executescript(brevity_term_script)
+    cursor.executescript(schema_script)
+    cursor.executescript(brevity_term_script)
 
-    con.commit()
-    con.close()
+    connection.commit()
+    connection.close()
 
 
 def get_arguments() -> argparse.Namespace:

@@ -43,7 +43,8 @@ class Database:
             f"Search for brevity term with '{name}' in the database."
         )
         response = self.cursor.execute(
-            f"SELECT term, description FROM brevity_term WHERE term LIKE '%{name}%'"
+            "SELECT term, description FROM brevity_term "
+            f"WHERE term LIKE '%{name}%'"
         )
         brevity_terms = response.fetchmany(5)
 
@@ -64,7 +65,8 @@ class Database:
             "Get a yet unused brevity term for the digest from the database."
         )
         response = self.cursor.execute(
-            "SELECT term, description FROM brevity_term WHERE used_in_digest = 0"
+            "SELECT term, description FROM brevity_term "
+            "WHERE used_in_digest = 0"
         )
         brevity_term = response.fetchone()
 
@@ -81,7 +83,8 @@ class Database:
             "Updating 'used_in_digest' for brevity term"
         )
         self.cursor.execute(
-            f"UPDATE brevity_term SET used_in_digest = 1 WHERE term = '{brevity_term[0]}'"
+            "UPDATE brevity_term SET used_in_digest = 1 "
+            f"WHERE term = '{brevity_term[0]}'"
         )
         self.connection.commit()
 

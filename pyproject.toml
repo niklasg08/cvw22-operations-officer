@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools >= 77.0.3"]
+requires = ["setuptools >= 77.0.3", "setuptools-git-versioning"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "cvw22-operations-officer"
-version = "0.1.0"
+dynamic = ["version"]
 description = "A Discord bot for the vCVW22 Discord server"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -38,6 +38,12 @@ venv = ".venv"
 style = "google"
 allow-init-docstring = true
 
+[tool.setuptools-git-versioning]
+enabled = true
+
+[tool.pytest]
+testpaths = ["tests"]
+
 [dependency-groups]
 dev = [
     "pre-commit>=4.4.0",
@@ -45,9 +51,10 @@ dev = [
     "pyright>=1.1.407",
     "pytest>=9.0.1",
     "pytest-cov>=7.0.0",
+    "pytest-mock>=3.15.1",
     "ruff>=0.14.6",
 ]
-doc = [
+docs = [
     "sphinx>=8.2.3",
     "sphinx-rtd-theme>=3.0.2",
 ]
