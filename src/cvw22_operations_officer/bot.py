@@ -7,7 +7,9 @@ from typing import Any
 import yaml
 from discord.ext import commands
 
-from cvw22_operations_officer.utils.database import Database
+from cvw22_operations_officer.services.brevity_term_service import (
+    BrevityTermService,
+)
 
 
 class DiscordBot(commands.Bot):
@@ -18,23 +20,22 @@ class DiscordBot(commands.Bot):
     communication between the discord server and the bot itself.
     """
 
-    def __init__(
-        self, config_dir: str | Path, *args: Any, **kwargs: Any
-    ) -> None:
+    def __init__(self, config_dir: Path, *args: Any, **kwargs: Any) -> None:
         """Initialize the discord bot.
 
         Args:
-            config_dir (str | Path): Path to the configuration directory.
+            config_dir (Path): Path to the configuration directory.
             *args (Any): Any arguments for the parent class
             **kwargs (Any): Any key-word arguments for the parent class
 
         """
         super().__init__(*args, **kwargs)
 
-        self.CONFIG_DIR = Path(config_dir)
+        self.CONFIG_DIR = config_dir
+        self.DB_PATH = config_dir / "cvw22_operations_officer.db"
         self.logger = logging.getLogger(f"cvw22_operations_officer.{__name__}")
         self.config: dict = {}
-        self.database = Database(self.CONFIG_DIR)
+        self.brevity_term_service = BrevityTermService(self.DB_PATH)
 
         self.get_config()
 

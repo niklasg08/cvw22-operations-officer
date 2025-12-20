@@ -13,7 +13,7 @@ import discord
 from dotenv import load_dotenv
 
 from cvw22_operations_officer.bot import DiscordBot
-from cvw22_operations_officer.cogs import admin, brevity_term
+from cvw22_operations_officer.cogs import admin, brevity_term_cog
 
 DEFAULT_CONFIG_DIR = Path(__file__).resolve().parent / "config"
 DEFAULT_LOG_LEVEL = "INFO"
@@ -63,21 +63,20 @@ def setup_logging(
     return logger
 
 
-def setup_config_dir(config_dir: str | Path) -> None:
+def setup_config_dir(config_dir: Path) -> None:
     """Set up the configuration directory with all required files.
 
     Args:
-        config_dir (str | Path): Path to the configuration directory.
+        config_dir (Path): Path to the configuration directory.
 
     Raises:
         NotADirectoryError: If the specified configuration directory is not a
             directory.
 
     """
-    config_dir = Path(config_dir)
     config_templates_dir = Path(__file__).resolve().parent / "config_templates"
     database_templates_dir = config_templates_dir / "database"
-    database_path = database_templates_dir / "cvw22_operations_officer.db"
+    db_path = config_dir / "cvw22_operations_officer.db"
 
     if not config_dir.exists():
         config_dir.mkdir(parents=True)
@@ -92,10 +91,10 @@ def setup_config_dir(config_dir: str | Path) -> None:
         if not file_path.exists():
             shutil.copyfile(config_templates_dir / file, file_path)
 
-    if database_path.exists():
+    if db_path.exists():
         return
 
-    open(database_path, "a").close()
+    open(db_path, "a").close()
 
     with open(database_templates_dir / "schema.sql", "r") as f:
         schema_script = f.read()
@@ -103,7 +102,7 @@ def setup_config_dir(config_dir: str | Path) -> None:
     with open(database_templates_dir / "brevity_term.sql", "r") as f:
         brevity_term_script = f.read()
 
-    connection = sqlite3.connect(config_dir / "cvw22_operations_officer.db")
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
     cursor.executescript(schema_script)
@@ -164,13 +163,13 @@ async def main() -> None:
 
     intents = discord.Intents.all()
     discord_bot = DiscordBot(
-        args.config_dir,
+        Path(args.config_dir),
         intents=intents,
         command_prefix="!",
     )
 
     await discord_bot.add_cog(admin.Admin(discord_bot))
-    await discord_bot.add_cog(brevity_term.BrevityTerm(discord_bot))
+    await discord_bot.add_cog(brevity_term_cog.BrevityTermCog(discord_bot))
 
     logger.info("Starting CVW22 Operations Officer ...")
     await discord_bot.start(discord_token)
@@ -179,6 +178,6 @@ async def main() -> None:
 if __name__ == "__main__":
     args = get_arguments()
     load_dotenv()
-    setup_config_dir(args.config_dir)
+    setup_config_dir(Path(args.config_dir))
 
     asyncio.run(main())

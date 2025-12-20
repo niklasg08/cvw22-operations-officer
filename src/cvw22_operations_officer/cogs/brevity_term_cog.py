@@ -7,29 +7,23 @@ from discord import TextChannel
 from discord.ext import commands, tasks
 
 from cvw22_operations_officer.bot import DiscordBot
+from cvw22_operations_officer.models.brevity_term_model import BrevityTerm
 
 BREVITY_TERM_DIGEST_TIME = time(hour=12, minute=0)
 
 
 class BrevityTermCog(commands.Cog):
-    """A discord cog for brevity term commands and tasks.
-
-    The discord cog handles all commands starting with '!brevity_term' and
-    a task. The task named 'Brevity Term Digest' teaches all users on the
-    discord server a new or known brevity term on a daily basis.
-    """
+    """Handle all brevity term commands and tasks."""
 
     def __init__(self, discord_bot: DiscordBot):
-        """Initialize the discord cog
+        """Initialize the discord cog.
 
         Args:
-            discord_bot (DiscordBot): The discord bot the cog belongs to.
+            discord_bot: The discord bot the cog belongs to.
 
         """
         self.logger = logging.getLogger(f"cvw22_operations_officer.{__name__}")
         self.bot = discord_bot
-
-        self.brevity_term_digest.start()
 
     async def cog_load(self) -> None:
         """Start 'Brevity Term Digest' task when cog is loaded."""
@@ -40,8 +34,8 @@ class BrevityTermCog(commands.Cog):
         """Coordinate all brevity term commands.
 
         Args:
-            ctx (commands.Context): The discord context of the command.
-            *args (str): Action and search term of the command.
+            ctx: The discord context of the command.
+            *args: Action and search term of the command.
 
         """
         if not self.bot.config["commands"]["brevity_term"]:
@@ -52,8 +46,7 @@ class BrevityTermCog(commands.Cog):
 
         if len(args) < 2:
             await ctx.send(
-                "Invalid command. "
-                "Usage: `!brevity_term <action> <search_term>`"
+                "Invalid command. Usage: `!brevity_term search <search_term>`"
             )
             return
         action: str = args[0]
@@ -67,12 +60,7 @@ class BrevityTermCog(commands.Cog):
 
     @tasks.loop(time=BREVITY_TERM_DIGEST_TIME)
     async def brevity_term_digest(self):
-        """Sends a brevity term at the specified time.
-
-        The task sends each day at the time specified in the
-        'BREVITY_TERM_DIGEST_TIME' constant a new brevity term into a specified
-        channel.
-        """
+        """Sends a brevity term at the specified time."""
         task_config = self.bot.config["tasks"]["brevity_term_digest"]
 
         if not task_config["enabled"]:
@@ -93,31 +81,26 @@ class BrevityTermCog(commands.Cog):
             )
             return
 
-        response = self.bot.database.get_brevity_terms_for_digest()
+        response = self.bot.brevity_term_service.get_brevity_terms_for_digest()
 
-        output_message = BrevityTerm.format_brevity_term(response)
+        output_message = BrevityTermCog.format_brevity_term(response)
 
         await channel.send(output_message)
 
     @staticmethod
-    def format_brevity_term(brevity_term: tuple) -> str:
+    def format_brevity_term(brevity_term: BrevityTerm) -> str:
         """Format the brevity term for discord.
 
-        Note: The output_message contains markdown because discord supports it.
-
         Args:
-            brevity_term (tuple): The brevity term with a term and description.
+            brevity_term: A brevity term as a BrevityTerm object.
 
         Returns:
-            str: The formatted brevity term.
+            The formatted brevity term in MARKDOWN as a string.
 
         """
-        term: str = brevity_term[0]
-        descriptions: str = brevity_term[1]
+        output_message = f"### Brevity Term: `{brevity_term.term}`"
 
-        output_message = f"### Brevity Term: `{term}`"
-
-        for description in descriptions.split("&"):
+        for description in brevity_term.description.split("&"):
             output_message += f"\n> {description.strip()}"
 
         return output_message
@@ -126,18 +109,22 @@ class BrevityTermCog(commands.Cog):
         """Get matching brevity terms by a search term.
 
         Args:
-            search_term (str): The search term to search for brevity terms.
+            search_term: The search term to search for brevity terms.
 
         Returns:
-            str: The formatted result of the search.
+            The formatted result of the search.
 
         """
-        response = self.bot.database.get_brevity_term_by_term(search_term)
+        response = self.bot.brevity_term_service.get_brevity_term_by_term(
+            search_term
+        )
         output_message = ""
 
         if response:
             for brevity_term in response:
-                output_message += BrevityTerm.format_brevity_term(brevity_term)
+                output_message += BrevityTermCog.format_brevity_term(
+                    brevity_term
+                )
                 output_message += "\n"
         else:
             output_message = f"No brevity terms found with `{search_term}`"
