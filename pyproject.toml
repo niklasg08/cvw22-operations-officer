@@ -42,6 +42,9 @@ check-return-types = false
 
 [tool.pytest]
 testpaths = ["tests"]
+filterwarnings = [
+    "ignore:'audioop' is deprecated and slated for removal in Python 3.13:DeprecationWarning",
+]
 
 [dependency-groups]
 dev = [
