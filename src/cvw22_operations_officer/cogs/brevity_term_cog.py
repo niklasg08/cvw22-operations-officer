@@ -81,7 +81,7 @@ class BrevityTermCog(commands.Cog):
             )
             return
 
-        response = self.bot.brevity_term_service.get_brevity_terms_for_digest()
+        response = self.bot.brevity_term_service.get_brevity_term_for_digest()
 
         output_message = BrevityTermCog.format_brevity_term(response)
 
@@ -115,7 +115,7 @@ class BrevityTermCog(commands.Cog):
             The formatted result of the search.
 
         """
-        response = self.bot.brevity_term_service.get_brevity_term_by_term(
+        response = self.bot.brevity_term_service.get_brevity_terms_by_term(
             search_term
         )
         output_message = ""
