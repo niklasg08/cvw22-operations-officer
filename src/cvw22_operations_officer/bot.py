@@ -24,9 +24,9 @@ class DiscordBot(commands.Bot):
         """Initialize the discord bot.
 
         Args:
-            config_dir (Path): Path to the configuration directory.
-            *args (Any): Any arguments for the parent class
-            **kwargs (Any): Any key-word arguments for the parent class
+            config_dir: Path to the configuration directory.
+            *args: Any arguments for the parent class
+            **kwargs: Any key-word arguments for the parent class
 
         """
         super().__init__(*args, **kwargs)

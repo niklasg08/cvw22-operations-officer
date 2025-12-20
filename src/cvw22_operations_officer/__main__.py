@@ -29,12 +29,12 @@ def setup_logging(
     """Set up the logging of the discord bot.
 
     Args:
-        config_dir (str): Path to the configuration directory.
-        log_level (str): Log level on which the logger minimum logs.
-        log_rotate_days (int): Number of days until the log file rotates.
+        config_dir: Path to the configuration directory.
+        log_level: Log level on which the logger minimum logs.
+        log_rotate_days: Number of days until the log file rotates.
 
     Returns:
-        logging.Logger: The configured logger object.
+        The configured logger object.
 
     """
     log_file = Path(config_dir) / "cvw22_operations_officer.log"
@@ -67,7 +67,7 @@ def setup_config_dir(config_dir: Path) -> None:
     """Set up the configuration directory with all required files.
 
     Args:
-        config_dir (Path): Path to the configuration directory.
+        config_dir: Path to the configuration directory.
 
     Raises:
         NotADirectoryError: If the specified configuration directory is not a
@@ -116,7 +116,7 @@ def get_arguments() -> argparse.Namespace:
     """Get parsed arguments.
 
     Returns:
-        argparse.Namespace: The parsed arguments.
+        The parsed arguments.
     """
     parser = argparse.ArgumentParser(
         description="""CVW22 Operations Officer:

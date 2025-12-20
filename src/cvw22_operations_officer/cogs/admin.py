@@ -20,7 +20,7 @@ class Admin(commands.Cog):
         """Initialize the discord cog.
 
         Args:
-            discord_bot (DiscordBot): The discord bot the cog belongs to.
+            discord_bot: The discord bot the cog belongs to.
 
         """
         self.logger = logging.getLogger(f"cvw22_operations_officer.{__name__}")
@@ -31,8 +31,8 @@ class Admin(commands.Cog):
         """Coordinate all admin commands.
 
         Args:
-            ctx (commands.Context): The discord context of the command.
-            *args (str): Scope and action of the command.
+            ctx: The discord context of the command.
+            *args: Scope and action of the command.
 
         """
         if not self.bot.config["commands"]["admin"]:
@@ -60,10 +60,10 @@ class Admin(commands.Cog):
         """Handle all commands with the 'config' scope.
 
         Args:
-            action (str): The desired action within the scope
+            action: The desired action within the scope
 
         Returns:
-            str: A feedback message for the user.
+            The feedback message for the user.
 
         """
         match action:
@@ -79,10 +79,10 @@ class Admin(commands.Cog):
         """Check if the context author is an admin.
 
         Args:
-            ctx (commands.Context): The discord context of the command.
+            ctx: The discord context of the command.
 
         Returns:
-            bool: Whether the author is an admin.
+            A bool which indicates whether the author is an admin.
 
         """
         admins: list = []
