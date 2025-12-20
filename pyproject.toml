@@ -37,9 +37,8 @@ venv = ".venv"
 [tool.pydoclint]
 style = "google"
 allow-init-docstring = true
-
-[tool.setuptools-git-versioning]
-enabled = true
+arg-type-hints-in-docstring = false
+check-return-types = false
 
 [tool.pytest]
 testpaths = ["tests"]

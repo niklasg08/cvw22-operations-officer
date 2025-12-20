@@ -16,4 +16,7 @@ repos:
     rev: 0.8.3
     hooks:
       - id: pydoclint
-        args: [ --style=google, --allow-init-docstring=True ]
+        args: [ --style=google,
+                --allow-init-docstring=True,
+                --arg-type-hints-in-docstring=False,
+                --check-return-types=False ]

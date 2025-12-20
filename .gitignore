@@ -3,6 +3,9 @@
 __pycache__/
 .venv
 
+# Pytest
+.coverage
+
 # Build artifacts
 *.egg-info/
 build/

@@ -11,7 +11,7 @@ from cvw22_operations_officer.bot import DiscordBot
 BREVITY_TERM_DIGEST_TIME = time(hour=12, minute=0)
 
 
-class BrevityTerm(commands.Cog):
+class BrevityTermCog(commands.Cog):
     """A discord cog for brevity term commands and tasks.
 
     The discord cog handles all commands starting with '!brevity_term' and
@@ -132,7 +132,7 @@ class BrevityTerm(commands.Cog):
             str: The formatted result of the search.
 
         """
-        response = self.bot.database.get_brevity_term_by_name(search_term)
+        response = self.bot.database.get_brevity_term_by_term(search_term)
         output_message = ""
 
         if response:
