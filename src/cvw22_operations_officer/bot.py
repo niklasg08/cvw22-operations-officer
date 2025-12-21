@@ -39,7 +39,7 @@ class DiscordBot(commands.Bot):
 
         self.get_config()
 
-    async def on_ready(self) -> None:
+    async def on_ready(self) -> None:  # pragma: no cover
         """Log message that the bot is ready."""
         self.logger.info("CVW22 Operations Officer is ready!")
 
