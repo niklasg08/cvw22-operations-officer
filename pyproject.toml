@@ -42,16 +42,19 @@ check-return-types = false
 
 [tool.pytest]
 testpaths = ["tests"]
+addopts = ["--cov=cvw22_operations_officer", "--cov-report=term-missing", "--no-cov-on-fail"]
 filterwarnings = [
     "ignore:'audioop' is deprecated and slated for removal in Python 3.13:DeprecationWarning",
 ]
 
 [dependency-groups]
 dev = [
+    "freezegun>=1.5.5",
     "pre-commit>=4.4.0",
     "pydoclint>=0.8.3",
     "pyright>=1.1.407",
     "pytest>=9.0.1",
+    "pytest-asyncio>=1.3.0",
     "pytest-cov>=7.0.0",
     "pytest-mock>=3.15.1",
     "ruff>=0.14.6",
