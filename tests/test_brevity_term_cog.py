@@ -3,7 +3,6 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
 from discord.channel import TextChannel, VoiceChannel
-from textwrap import dedent
 from freezegun import freeze_time
 
 from cvw22_operations_officer.cogs.brevity_term_cog import BrevityTermCog
