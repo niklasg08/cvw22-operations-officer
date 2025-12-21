@@ -1,12 +1,13 @@
 # Copyright 2025 Niklas Glienke
 
-import pytest
 import sqlite3
 
+import pytest
+
+from cvw22_operations_officer.models.brevity_term_model import BrevityTerm
 from cvw22_operations_officer.services.brevity_term_service import (
     BrevityTermService,
 )
-from cvw22_operations_officer.models.brevity_term_model import BrevityTerm
 
 
 @pytest.fixture

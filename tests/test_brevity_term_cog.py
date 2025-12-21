@@ -1,7 +1,8 @@
 # Copyright 2025 Niklas Glienke
 
-import pytest
 from unittest.mock import AsyncMock, MagicMock
+
+import pytest
 from discord.channel import TextChannel, VoiceChannel
 from freezegun import freeze_time
 

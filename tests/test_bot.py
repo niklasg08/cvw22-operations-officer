@@ -1,8 +1,9 @@
 # Copyright 2025 Niklas Glienke
 
-import pytest
 from textwrap import dedent
+
 import discord
+import pytest
 import yaml
 
 from cvw22_operations_officer.bot import DiscordBot
