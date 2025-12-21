@@ -9,7 +9,7 @@ from cvw22_operations_officer.services.brevity_term_service import (
 from cvw22_operations_officer.models.brevity_term_model import BrevityTerm
 
 
-@pytest.fixture()
+@pytest.fixture
 def setup(tmp_path):
     db_path = tmp_path / "test.db"
 
