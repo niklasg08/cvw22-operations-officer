@@ -37,9 +37,7 @@ def test_get_config_valid(tmp_path):
 
 def test_get_config_no_config_file(tmp_path):
     with pytest.raises(FileNotFoundError):
-        discord_bot = DiscordBot(
-            tmp_path, intents=discord.Intents.all(), command_prefix="!"
-        )
+        DiscordBot(tmp_path, intents=discord.Intents.all(), command_prefix="!")
 
 
 def test_get_config_invalid_yaml(tmp_path):
