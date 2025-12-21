@@ -8,6 +8,8 @@ tasks:
   brevity_term_digest:
     enabled: true
     channel_id: 0123456789
+    time: "12:00"
+    timezone: "Europe/Zurich"
 
 admins:
   - name: "Test User"
