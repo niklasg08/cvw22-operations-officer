@@ -16,3 +16,6 @@ _build/
 
 # Runtime
 .env
+
+# Project
+config/
