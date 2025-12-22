@@ -13,7 +13,7 @@ import discord
 from dotenv import load_dotenv
 
 from cvw22_operations_officer.bot import DiscordBot
-from cvw22_operations_officer.cogs import admin, brevity_term_cog
+from cvw22_operations_officer.cogs import config_cog, brevity_term_cog
 
 DEFAULT_CONFIG_DIR = Path(__file__).resolve().parent / "config"
 DEFAULT_LOG_LEVEL = "INFO"
@@ -168,7 +168,7 @@ async def main() -> None:
         command_prefix="!",
     )
 
-    await discord_bot.add_cog(admin.Admin(discord_bot))
+    await discord_bot.add_cog(config_cog.ConfigCog(discord_bot))
     await discord_bot.add_cog(brevity_term_cog.BrevityTermCog(discord_bot))
 
     logger.info("Starting CVW22 Operations Officer ...")
