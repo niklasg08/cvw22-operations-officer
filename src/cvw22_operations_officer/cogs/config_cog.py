@@ -1,7 +1,7 @@
 # Copyright 2025 Niklas Glienke
 
-import logging
 import json
+import logging
 
 from discord.ext import commands
 

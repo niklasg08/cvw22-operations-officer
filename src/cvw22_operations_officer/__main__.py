@@ -13,7 +13,7 @@ import discord
 from dotenv import load_dotenv
 
 from cvw22_operations_officer.bot import DiscordBot
-from cvw22_operations_officer.cogs import config_cog, brevity_term_cog
+from cvw22_operations_officer.cogs import brevity_term_cog, config_cog
 
 DEFAULT_CONFIG_DIR = Path(__file__).resolve().parent / "config"
 DEFAULT_LOG_LEVEL = "INFO"

@@ -132,8 +132,9 @@ def test_config_update_exception(mock_bot):
 
     assert response == (
         "While updating the bot config, "
-        f"the following exception was thrown: `Test Error.`"
+        "the following exception was thrown: `Test Error.`"
     )
+
 
 def test_is_admin_true(mock_bot, mock_ctx):
     mock_ctx.author.id = 123456789
@@ -142,7 +143,7 @@ def test_is_admin_true(mock_bot, mock_ctx):
 
     response = cog._is_admin(mock_ctx)
 
-    assert response == True
+    assert response
 
 
 def test_is_admin_false(mock_bot, mock_ctx):
@@ -152,4 +153,4 @@ def test_is_admin_false(mock_bot, mock_ctx):
 
     response = cog._is_admin(mock_ctx)
 
-    assert response == False
+    assert not response
