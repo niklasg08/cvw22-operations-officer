@@ -22,7 +22,7 @@ WIP
 
 Bot Documentation
 -----------------
-See Documentation of the bot.
+See `Documentation <https://cvw22-operations-officer.readthedocs.io/en/latest/>`_ of the bot.
 
 Version History
 ---------------
@@ -30,5 +30,5 @@ See `Releases <https://github.com/niklasg08/cvw22-operations-officer/releases>`_
 
 License
 -------
-This project is licensed under the MIT License - see
-`LICENSE <https://github.com/niklasg08/cvw22-operations-officer/blob/main/LICENSE>`_ the file for details.
+This project is licensed under the MIT License - see the
+`LICENSE <https://github.com/niklasg08/cvw22-operations-officer/blob/main/LICENSE>`_ file for details.
