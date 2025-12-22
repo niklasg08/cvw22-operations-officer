@@ -43,7 +43,7 @@ class BrevityTermCog(commands.Cog):
 
         """
         if not self.bot.config["commands"]["brevity_term"]:
-            await ctx.send("The 'brevity_term' commands has been disabled.")
+            await ctx.send("The `brevity_term` command has been disabled.")
             return
 
         self.logger.info(
