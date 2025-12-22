@@ -1,7 +1,7 @@
 # Copyright 2025 Niklas Glienke
 
 import logging
-from pprint import pformat
+import json
 
 from discord.ext import commands
 
@@ -46,7 +46,9 @@ class ConfigCog(commands.Cog):
             case "update":
                 await ctx.send(self._config_update())
             case "show":
-                await ctx.send(pformat(self.bot.config))
+                await ctx.send(json.dumps(self.bot.config, indent=4))
+            case _:
+                await ctx.send("Invalid `config` command.")
 
     def _config_update(self) -> str:
         """Update the bot config.
