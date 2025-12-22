@@ -235,13 +235,25 @@ INSERT INTO "brevity_term" ("term", "description", "used_in_digest") VALUES
     ("THREAT [direction]", "[A/A] Untargeted HOSTILE, BANDIT, or BOGEY is within a briefed range of a FRIENDLY aircraft.", 0),
     ("THROTTLES", "[A/A] Reminder to set throttles appropriately considering the IR threat and desired energy state.", 0),
     ("THUMP", "** [AIR-MAR] Aircraft conducts low-altitude, high-speed pass over or abeam a designated vessel and does not cross the bow. Supersonic airspeed is authorized as long as damage is not anticipated.", 0),
-    ("test", "set", 0),
-    ("test", "set", 0),
-    ("test", "set", 0),
-    ("test", "set", 0),
-    ("test", "set", 0),
-    ("test", "set", 0),
-
-    ("test", "set", 0);
+    ("TIED", "[A/A] Positive radar contact with element or aircraft.", 0),
+    ("TIMBER", "Datalink Network (Link 16).", 0),
+    ("TIMEOUT", "1. ** [A/A] [S/A] Shooter assesses valid BVR shot parameters have been met and missile has reached termination. & 2. ** [A/S] Munition impact is obscured and impact cannot be confirmed and time of flight has elapsed.", 0),
+    ("TOGGLE [system]", "Execute the briefed setting change on specified system.", 0),
+    ("TRACK [direction]", "1. ** [A/A] GROUP or CONTACTS direction of flight or movement. & 2. ** [A/S] [S/S] Directive call assigning responsibility to an asset for maintaining sensor or visual observation of a defined object or area. & 3. ** [A/S] Rotary-wing directive call to establish race track (e.g., “Taz 31, TRACK left). & 4. ** [A/S] [AIR-MAR] Information call stating direction of vehicle or CONTACT in motion (e.g., TALLY TECHNICAL TRACK Northwest).", 0),
+    ("TRACKING or [system] TRACKING", "1. * [EW] [S/A] IR lock-on. & 2. * Enemy air defense system is maintaining situational awareness on FRIENDLY.", 0),
+    ("TRASHED", "* [A/A] [S/A] FRIENDLY missile has been defeated.", 0),
+    ("TROJAN", "** Deployment of air launch decoy.", 0),
+    ("TUMBLEWEED", "Situational awareness, (i.e., NO JOY, BLIND) and request information.", 0),
+    ("UNABLE", "Cannot comply as requested or directed.", 0),
+    ("VANISHED", "** [A/A] [S/A] Special case of FADED defined as a GROUP or ARM or CONTACT with no available sensor data and is: & (1) Not in a known sensor blind zone (terrain masking or Doppler blind zone) & (2) Correlated to a shot by FRIENDLY forces.", 0),
+    ("VECTOR [heading]", "Alter heading to indicated.", 0),
+    ("VISUAL", "Sighting of a FRIENDLY aircraft or ground position or ship. Opposite of BLIND.", 0),
+    ("WEAPONS [status]", "* Weapons control status. Fire only: & 1. * FREE: at targets not identified as FRIENDLY IAW current ROE. & 2. * TIGHT: at targets positively identified as HOSTILE IAW current ROE. & 3. * HOLD/SAFE: in self-defense or in response to a formal order.", 0),
+    ("WHAT LUCK", "Request for results of missions or tasks.", 0),
+    ("WHAT STATE", "[A/A] Request for amount of fuel and missiles remaining. Response to WHAT STATE is: thousands of pounds of fuel (given to one decimal point), or time remaining.", 0),
+    ("WILCO", "Will comply with received instructions.", 0),
+    ("WINCHESTER", "No ordnance remaining.", 0),
+    ("YARDSTICK", "[A/A] Use air tactical air navigation for ranging.", 0),
+    ("ZIPLIP", "Limit transmissions to critical information only.", 0);
 
 COMMIT TRANSACTION;
