@@ -25,7 +25,7 @@ CONFIG_FILES = ("config.yaml",)
 
 def setup_logging(
     config_dir: str, log_level: str, log_rotate_days: int
-) -> logging.Logger:
+) -> logging.Logger:  # pragma: no cover
     """Set up the logging of the discord bot.
 
     Args:
@@ -94,7 +94,7 @@ def setup_config_dir(config_dir: Path) -> None:
     if db_path.exists():
         return
 
-    open(db_path, "a").close()
+    db_path.touch(exist_ok=False)
 
     with open(database_templates_dir / "schema.sql", "r") as f:
         schema_script = f.read()
@@ -112,7 +112,7 @@ def setup_config_dir(config_dir: Path) -> None:
     connection.close()
 
 
-def get_arguments() -> argparse.Namespace:
+def get_arguments() -> argparse.Namespace:  # pragma: no cover
     """Get parsed arguments.
 
     Returns:
@@ -149,7 +149,7 @@ def get_arguments() -> argparse.Namespace:
     return parser.parse_args()
 
 
-async def main() -> None:
+async def main() -> None:  # pragma: no cover
     """Set up and run the discord bot."""
     logger = setup_logging(
         args.config_dir,
@@ -175,7 +175,7 @@ async def main() -> None:
     await discord_bot.start(discord_token)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     args = get_arguments()
     load_dotenv()
     setup_config_dir(Path(args.config_dir))
