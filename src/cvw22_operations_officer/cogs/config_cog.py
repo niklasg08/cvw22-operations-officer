@@ -7,6 +7,7 @@ from discord.ext import commands
 
 from cvw22_operations_officer.bot import DiscordBot
 
+
 class ConfigCog(commands.Cog):
     """Handle all config commands"""
 
@@ -33,13 +34,13 @@ class ConfigCog(commands.Cog):
             await ctx.send("The `config` commands have been disabled.")
             return
         elif not self._is_admin(ctx):
-            await ctx.send("Permission denied. "
-                           "The `config` command can only be used by an admin.")
+            await ctx.send(
+                "Permission denied. "
+                "The `config` command can only be used by an admin."
+            )
             return
 
-        self.logger.info(
-            f"Execute 'config' command with '{action}' action."
-        )
+        self.logger.info(f"Execute 'config' command with '{action}' action.")
 
         match action:
             case "update":
@@ -62,8 +63,10 @@ class ConfigCog(commands.Cog):
             self.bot.get_config()
             return "The bot config has been successfully updated."
         except Exception as e:
-            return ("While updating the bot config, "
-                    f"the following exception was thrown: `{e}`")
+            return (
+                "While updating the bot config, "
+                f"the following exception was thrown: `{e}`"
+            )
 
     def _is_admin(self, ctx: commands.Context) -> bool:
         """Check if the context author is an admin.
