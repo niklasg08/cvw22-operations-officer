@@ -47,7 +47,7 @@ async def test_brevity_term_enabled_by_config(mock_bot, mock_ctx):
 
     cog = BrevityTermCog(mock_bot)
 
-    await cog.brevity_term(cog, mock_ctx, "TERM EQUAL 1")
+    await cog.brevity_term(cog, mock_ctx, "TERM EQUAL 1")  # type: ignore
 
     mock_ctx.send.assert_called_once()
     sent_message = mock_ctx.send.call_args.args[0].split("\n")
@@ -62,7 +62,7 @@ async def test_brevity_term_disabled_by_config(mock_bot, mock_ctx):
 
     cog = BrevityTermCog(mock_bot)
 
-    await cog.brevity_term(cog, mock_ctx, "TERM EQUAL 1")
+    await cog.brevity_term(cog, mock_ctx, "TERM EQUAL 1")  # type: ignore
 
     mock_ctx.send.assert_called_once()
     sent_message = mock_ctx.send.call_args.args[0]

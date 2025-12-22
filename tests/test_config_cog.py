@@ -34,7 +34,7 @@ async def test_config_command_invalid_command(mock_bot, mock_ctx):
 
     cog = ConfigCog(mock_bot)
 
-    await cog.config(cog, mock_ctx, "invalid_action")
+    await cog.config(cog, mock_ctx, "invalid_action")  # type: ignore
 
     mock_ctx.send.assert_called_once()
     sent_message = mock_ctx.send.call_args.args[0]
@@ -49,7 +49,7 @@ async def test_config_command_disabled_by_config(mock_bot, mock_ctx):
 
     cog = ConfigCog(mock_bot)
 
-    await cog.config(cog, mock_ctx, "invalid_action")
+    await cog.config(cog, mock_ctx, "invalid_action")  # type: ignore
 
     mock_ctx.send.assert_called_once()
     sent_message = mock_ctx.send.call_args.args[0]
@@ -63,7 +63,7 @@ async def test_config_command_no_admin(mock_bot, mock_ctx):
 
     cog = ConfigCog(mock_bot)
 
-    await cog.config(cog, mock_ctx, "invalid_action")
+    await cog.config(cog, mock_ctx, "invalid_action")  # type: ignore
 
     mock_ctx.send.assert_called_once()
     sent_message = mock_ctx.send.call_args.args[0]
@@ -79,7 +79,7 @@ async def test_config_command_show_success(mock_bot, mock_ctx):
 
     cog = ConfigCog(mock_bot)
 
-    await cog.config(cog, mock_ctx, "show")
+    await cog.config(cog, mock_ctx, "show")  # type: ignore
 
     mock_ctx.send.assert_called_once()
     sent_message = mock_ctx.send.call_args.args[0]
@@ -106,7 +106,7 @@ async def test_config_command_update_success(mock_bot, mock_ctx):
 
     cog = ConfigCog(mock_bot)
 
-    await cog.config(cog, mock_ctx, "update")
+    await cog.config(cog, mock_ctx, "update")  # type: ignore
 
     mock_ctx.send.assert_called_once()
     sent_message = mock_ctx.send.call_args.args[0]
