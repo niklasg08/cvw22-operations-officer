@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 @dataclass
 class BrevityTerm:
-    """Represent a brevity term"""
+    """Represent a brevity term."""
 
     term: str
     description: str
