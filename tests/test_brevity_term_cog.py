@@ -67,7 +67,7 @@ async def test_brevity_term_disabled_by_config(mock_bot, mock_ctx):
     mock_ctx.send.assert_called_once()
     sent_message = mock_ctx.send.call_args.args[0]
 
-    assert sent_message == "The 'brevity_term' commands has been disabled."
+    assert sent_message == "The `brevity_term` command has been disabled."
 
 
 @pytest.mark.asyncio
