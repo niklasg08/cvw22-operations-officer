@@ -1,22 +1,24 @@
 [build-system]
-requires = ["setuptools >= 77.0.3", "setuptools-git-versioning"]
+requires = ["setuptools>=80.10.1", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "cvw22-operations-officer"
 dynamic = ["version"]
 description = "A Discord bot for the vCVW22 Discord server"
-readme = "README.md"
+readme = "README.rst"
 requires-python = ">=3.12"
 dependencies = [
-    "discord>=2.3.2",
-    "dotenv>=0.9.9",
+    "discord-py>=2.6.4",
+    "python-dotenv>=1.2.1",
     "pytz>=2025.2",
     "pyyaml>=6.0.3",
 ]
 license = "MIT"
 license-files = ["LICENSE"]
 keywords = ["discord", "docker"]
+
+[tool.setuptools_scm]
 
 [tool.ruff]
 line-length = 79

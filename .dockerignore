@@ -1,0 +1,12 @@
+# Ignore everything
+*
+
+# Allow required files and directories
+!/src
+!/pyproject.toml
+!/uv.lock
+!/.python-version
+!/LICENSE
+
+# Ignore unrequired files in required directories
+**/*.egg-info
